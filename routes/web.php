@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\TaskController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +15,13 @@ use App\Http\Controllers\ItemController;
 |
 */
 
-Route::get('items', [ItemController::class, 'index']);
-Route::post('items/update-order', [ItemController::class, 'updateOrder']);
+Route::get('task', [TaskController::class, 'index'])->name('items.index');
+Route::get('task/data', [TaskController::class, 'getData'])->name('items.data');
+Route::post('task', [TaskController::class, 'store'])->name('items.store');
+Route::put('task/{id}', [TaskController::class, 'update'])->name('items.update');
+Route::delete('v/{id}', [TaskController::class, 'destroy'])->name('items.destroy');
+
+
+//Route::get('items', [ItemController::class, 'index']);
+//Route::post('items/update-order', [ItemController::class, 'updateOrder']);
 
