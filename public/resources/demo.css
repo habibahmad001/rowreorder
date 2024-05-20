@@ -5,7 +5,14 @@ body {
   color: #333;
   background-color: #fff;
 }
-
+.spacer {
+    margin: 3% auto !important;
+}
+.bd-style {
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    padding: 1.5% !important;
+}
 section {
   position: relative;
 }

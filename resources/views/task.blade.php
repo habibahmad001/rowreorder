@@ -223,12 +223,7 @@
                     columns: [
                         { data: 'readingOrder', className: 'reorder' },
                         { data: 'name' },
-                        {
-                            data: 'created_at',
-                            render: function (data, type, row) {
-                                return parseInt(data / 60, 10) + 'h ' + (data % 60) + 'm';
-                            }
-                        }
+                        { data: 'created_at' }
                     ],
                     columnDefs: [{ orderable: false, targets: [1, 2] }],
                     layout: {
@@ -296,10 +291,7 @@
                     columns: [
                         { data: 'readingOrder', className: 'reorder' },
                         { data: 'name' },
-                        {
-                            data: 'created_at',
-                            render: (data) => parseInt(data / 60, 10) + 'h ' + (data % 60) + 'm'
-                        }
+                        { data: 'created_at' }
                     ],
                     columnDefs: [{ orderable: false, targets: [1, 2] }],
                     layout: {
@@ -344,15 +336,29 @@
 
 </head>
 <body class="dt-example php">
-<div class="container">
+<div class="container spacer bd-style">
+    <section>
+        <div class="row">
+            <div class="col-6">
+                <select name="project" id="project" style="width: 50%; height: 20px" onchange="javascript: window.location.href= '/?pid=' + $(this).val();">
+                    <option>-- Please select Project --</option>
+                    <option value="1">Project 1</option>
+                    <option value="2">Project 2</option>
+                    <option value="3">Project 3</option>
+                </select>
+            </div>
+        </div>
+    </section>
+    <br />
+    <br />
     <section>
         <div class="demo-html">
             <table id="example" class="display" cellspacing="0" width="100%">
                 <thead>
                 <tr>
                     <th width="15%">Reading Order</th>
-                    <th width="75%">Name</th>
-                    <th width="10%">Created At</th>
+                    <th width="65%">Name</th>
+                    <th width="20%">Created At</th>
                 </tr>
                 </thead>
             </table>

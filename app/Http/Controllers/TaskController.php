@@ -26,13 +26,17 @@ class TaskController extends Controller
         }
     }
 
-    public function getData()
+    public function getData(Request $request)
     {
-        $items = Task::select(['id', 'name', 'readingOrder', 'created_at', 'updated_at']);
+        if($request->has("pid")) {
+            $items = Task::select(['id', 'name', 'readingOrder', 'created_at', 'updated_at'])->where("project_id", $request->input("pid"))->orderBy("readingOrder", "DESC");
+        } else {
+            $items = Task::select(['id', 'name', 'readingOrder', 'created_at', 'updated_at'])->orderBy("readingOrder", "DESC");
+        }
 //        return DataTables::of($items)->make(true);
         return DataTables::of($items)
             ->editColumn('created_at', function ($item) {
-                return strtotime($item->created_at);
+                return date("F j, Y H:i:s", strtotime($item->created_at));
             })
             ->addColumn('DT_RowId', function ($item) {
                 return 'row_' . $item->id;
@@ -42,14 +46,26 @@ class TaskController extends Controller
 
     public function store(Request $request)
     {
+        $resp = [];
         if($request->action == "edit") {
-            $arrid = explode("_", key($request->data));
-            $obj = Task::where("id", $arrid[1])->update(["name"=>$request->data[key($request->data)]["name"], "readingOrder"=>$request->data[key($request->data)]["readingOrder"]]);
+
+            if(count($request->data) > 1) {
+                foreach($request->data as $k=>$v) {
+                    $arrid = explode("_", $k);
+                    $obj = Task::where("id", $arrid[1])->update(["readingOrder"=>$request->data[$k]["readingOrder"]]);
+                    $resp["data"][] = array("DT_RowId" => $k, "readingOrder" => $request->data[$k]["readingOrder"]);
+                }
+            } else {
+                $arrid = explode("_", key($request->data));
+                $obj = Task::where("id", $arrid[1])->update(["name"=>$request->data[key($request->data)]["name"], "readingOrder"=>$request->data[key($request->data)]["readingOrder"]]);
+                $resp["data"][] = array("DT_RowId" => key($request->data), "name"=>$request->data[key($request->data)]["name"], "readingOrder"=>$request->data[key($request->data)]["readingOrder"]);
+            }
         }
 
         if($request->action == "remove") {
             $arrid = explode("_", key($request->data));
             $obj = Task::destroy($arrid[1]);
+            $resp["data"][] = array("DT_RowId" => key($request->data), "name"=>$request->data[key($request->data)]["name"], "readingOrder"=>$request->data[key($request->data)]["readingOrder"]);
         }
 
         if($request->action == "create") {
@@ -60,9 +76,10 @@ class TaskController extends Controller
             $obj->readingOrder = $data["readingOrder"];
 
             $obj->save();
+            $resp["data"][] = array("DT_RowId" => key($request->data), "name"=>$request->data[key($request->data)]["name"], "readingOrder"=>$request->data[key($request->data)]["readingOrder"], "created_at"=>$obj->created_at);
         }
 
-        return response()->json($obj);
+        return response()->json($resp);
     }
 
     public function update(Request $request, $id)
