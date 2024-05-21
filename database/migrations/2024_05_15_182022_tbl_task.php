@@ -17,6 +17,7 @@ class TblTask extends Migration
             $table->id();
             $table->string( 'name', 256)->nullable();
             $table->string( 'readingOrder', 256)->nullable();
+            $table->string( 'project_id', 11)->nullable();
             $table->enum('status', array('yes', 'no'))->default('no');
             $table->timestamps();
         });

@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0, user-scalable=no">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Editor example - Row reordering</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="./resources/syntax/shCore.css">
     <link rel="stylesheet" type="text/css" href="./resources/demo.css">
     <style type="text/css" class="init">
@@ -196,6 +198,8 @@
                 }
             },
             jquery: function () {
+
+
                 var editor = new DataTable.Editor({
                     ajax: {
                         url: '{!! route('items.store') !!}',
@@ -219,7 +223,10 @@
 
                 var table = $('#example').DataTable({
                     // ajax: './res.txt',
-                    ajax: '{!! route('items.data') !!}',
+                    ajax: {
+                        url: '{!! route('items.data') !!}',
+                        data: { pid: (new URLSearchParams(window.location.search)).get("pid") || 0 }
+                    },
                     columns: [
                         { data: 'readingOrder', className: 'reorder' },
                         { data: 'name' },
@@ -287,7 +294,10 @@
 
                 const table = new DataTable('#example', {
                     // ajax: './res.txt',
-                    ajax: '{!! route('items.data') !!}',
+                    ajax: {
+                        url: '{!! route('items.data') !!}',
+                        data: { pid: (new URLSearchParams(window.location.search)).get("pid") || 0 }
+                    },
                     columns: [
                         { data: 'readingOrder', className: 'reorder' },
                         { data: 'name' },
@@ -340,12 +350,14 @@
     <section>
         <div class="row">
             <div class="col-6">
-                <select name="project" id="project" style="width: 50%; height: 20px" onchange="javascript: window.location.href= '/?pid=' + $(this).val();">
+                <select name="project" id="project" class="form-control" onchange="javascript: window.location.href= '/?pid=' + $(this).val();">
                     <option>-- Please select Project --</option>
+                    <option value="0">All Projects</option>
                     <option value="1">Project 1</option>
                     <option value="2">Project 2</option>
                     <option value="3">Project 3</option>
                 </select>
+                <div class="col-6"></div>
             </div>
         </div>
     </section>
@@ -365,5 +377,11 @@
         </div>
     </section>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" type="text/javascript"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.4.0.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

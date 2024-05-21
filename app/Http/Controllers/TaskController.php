@@ -28,7 +28,7 @@ class TaskController extends Controller
 
     public function getData(Request $request)
     {
-        if($request->has("pid")) {
+        if($request->has("pid") && $request->input("pid") != 0) {
             $items = Task::select(['id', 'name', 'readingOrder', 'created_at', 'updated_at'])->where("project_id", $request->input("pid"))->orderBy("readingOrder", "DESC");
         } else {
             $items = Task::select(['id', 'name', 'readingOrder', 'created_at', 'updated_at'])->orderBy("readingOrder", "DESC");
