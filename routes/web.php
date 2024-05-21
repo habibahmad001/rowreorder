@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ItemController;
 use App\Http\Controllers\TaskController;
 
 /*
@@ -21,7 +20,4 @@ Route::post('task', [TaskController::class, 'store'])->name('items.store');
 Route::put('task/{id}', [TaskController::class, 'update'])->name('items.update');
 Route::delete('v/{id}', [TaskController::class, 'destroy'])->name('items.destroy');
 
-
-//Route::get('items', [ItemController::class, 'index']);
-//Route::post('items/update-order', [ItemController::class, 'updateOrder']);
 
